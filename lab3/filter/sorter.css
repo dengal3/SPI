@@ -1,0 +1,42 @@
+body {
+	
+}
+
+table {
+	border-collapse: collapse;
+	width: 50%;
+}
+
+table,th,td {
+	border: 1px solid black;
+	padding: 5px;
+}
+
+th {
+	background-color: #274088;
+	color: white;
+}
+
+th:hover {
+	cursor: pointer;
+}
+
+.chosen {
+	background-color: #B0C4DE;
+}
+
+.ascend {
+	background-image: url("ascend.png");
+	background-position: center right;
+	background-repeat: no-repeat;
+}
+
+.descend {
+	background-image: url("descend.png");
+	background-position: center right;
+	background-repeat: no-repeat;
+}
+
+tr:nth-child(even) {
+	background-color: #D3D3D3;
+}
