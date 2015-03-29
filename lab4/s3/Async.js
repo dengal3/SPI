@@ -4,6 +4,7 @@ window.onload = initPage;
 function initPage() {
 	buttonsSetting();
 	atplusSetting(null);
+	iconSetting();
 }
 
 //create a request
@@ -30,8 +31,8 @@ var EventUtil = {
 		if (element.addEventListener) {
 			element.addEventListener(type, handler, false);
 		} else if (element.attachEvent) {
-			element.attachEvent("on"+type, handler);
-		} else {
+			element.attachEvent("on"+type, handler)
+;		} else {
 			element["on"+type] = handler;
 		}
 	},
@@ -43,6 +44,31 @@ var EventUtil = {
 		} else {
 			element["on"+type] = null;
 		}
+	}
+}
+
+//setting the icon onclick function
+function iconSetting() {
+	var icon = document.getElementsByClassName("icon")[0];
+	EventUtil.addHandler(icon, "click", together);
+}
+
+function oneByOne(button_id) {
+	return function() {
+		var button = document.getElementsByClassName("button")[button_id];
+		if (button_id <= 4) {
+			buttonFunc(button_id, "oneByOne").call(button);
+		} else {
+			clickToSum();
+		}
+	}
+}
+
+function together() {
+	var buttons = document.getElementsByClassName("button");
+
+	for (var i = 0; i < buttons.length; i++) {
+		buttonFunc(i, "together").call(buttons[i]);
 	}
 }
 
@@ -96,49 +122,70 @@ function buttonsSetting() {
 
 	for (var i = 0; i < buttons.length; i++) {
 		buttons[i].bubbles = true;
-		EventUtil.addHandler(buttons[i], "click", buttonFunc);
+		EventUtil.addHandler(buttons[i], "click", buttonFunc(i, "custom"));
 	}
 }
 
 
 //binding function with each button
-function buttonFunc() {
-	if (this.bubbles == true) {
-		var request = createRequest();
-		var url = "/";
+function buttonFunc(num, mode) {
+	return function() {
+		if (this.bubbles == true) {
+			var request = createRequest();
+			var url = "/";
 
-		if (request == null) {
-    		alert("Unable to create request");
-    		return;
-  		}
-
-  		var button = this;
-  		var e = event;
-  		request.onreadystatechange = function(button, e) {
-  			return function(event) {
-  				if(request.readyState == 4) {
-  					if ((request.status >= 200 && request.status < 300) || request.status == 304) {
-  						showNumber(button, request.responseText);
-  						button.className += " clicked";  //set the button to clicked class
-  						EventUtil.removeHandler(button, "click", buttonFunc);  //remove the handle function from the button
-  						enableButtons(button);   //enable other buttons
-  						MotivateInfoBar();       // check and motivate the info bar
-  					} else {
-  						alert("request failed");
-  					}
-  				}
+			if (request == null) {
+    			alert("Unable to create request");
+    			return;
   			}
-  		}(button, event);
-  		//open the url
-  		request.open("GET", url, true);
-  		request.send(null);
 
-		var redCircle = this.getElementsByTagName("span")[0];
-		redCircle.style.display = "block";
-		redCircle.innerHTML = redCircle.innerHTML.replace(/\d/, "...");
-		disableOtherButtons(this);
-		atplusSetting(request);
+  			var button = this;
+  			var e = event;
+  			request.onreadystatechange = function(button, num, mode) {
+  				return function(event) {
+  					if(request.readyState == 4) {
+  						if ((request.status >= 200 && request.status < 300) || request.status == 304) {
+
+  							custom(button, num, request.responseText);
+
+  							if (mode === "oneByOne") {
+  								oneByOne(num+1)();
+  							}
+
+  							if (num == 4 && mode === "together") {
+  								clickToSum();
+  							}
+  						} else {
+  							console.log("request failed");
+  						}
+  					}
+  				};
+  			}(button, num, mode);
+  			//open the url
+  			request.open("GET", url, true);
+  			request.send(null);
+
+  			//change the text in the red dot
+			var redCircle = this.getElementsByTagName("span")[0];
+			redCircle.style.display = "block";
+			redCircle.innerHTML = redCircle.innerHTML.replace(/\d/, "...");
+
+			if (mode != "together") {
+				//disable other buttons' click function
+				disableOtherButtons(this);
+			}
+			//pass the request to the atplusSetting function
+			atplusSetting(request);
+		}
 	}
+}
+
+function custom(button, num, text) {
+	showNumber(button, text);
+  	button.className += " clicked";  //set the button to clicked class
+  	EventUtil.removeHandler(button, "click", buttonFunc);  //remove the handle function from the button
+  	enableButtons();   //enable other buttons
+  	MotivateInfoBar();       // check and motivate the info bar					
 }
 
 //check and motivate the info Bar(the big big bubble) +_+
@@ -161,16 +208,17 @@ function MotivateInfoBar() {
 function clickToSum() {
 	var sum = 0;
 	var nums = document.getElementsByClassName("number");
+	var bigButton = document.getElementsByClassName("info")[0];
 
 	for (var i = 0; i < nums.length; i++) {
 		sum += parseInt(nums[i].innerHTML);
 	}
 
-	this.getElementsByTagName("h2")[0].appendChild(document.createTextNode(sum));
+	bigButton.getElementsByTagName("h2")[0].appendChild(document.createTextNode(sum));
 }
 
 //enable the unclicked buttons
-function enableButtons(button) {
+function enableButtons() {
 	var buttons = document.getElementsByTagName("li");
 
 	for (var i = 0; i < buttons.length; i++) {

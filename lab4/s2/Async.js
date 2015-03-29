@@ -31,8 +31,8 @@ var EventUtil = {
 		if (element.addEventListener) {
 			element.addEventListener(type, handler, false);
 		} else if (element.attachEvent) {
-			element.attachEvent("on"+type, handler);
-		} else {
+			element.attachEvent("on"+type, handler)
+;		} else {
 			element["on"+type] = handler;
 		}
 	},
@@ -56,10 +56,11 @@ function iconSetting() {
 function oneByOne(button_id) {
 	return function() {
 		var button = document.getElementsByClassName("button")[button_id];
+		var mode = "oneByOne";
 		if (button_id <= 4) {
-			buttonFunc.call(button, button_id);
+			buttonFunc(button_id, mode).call(button);
 		} else {
-			return;
+			clickToSum();
 		}
 	}
 }
@@ -114,14 +115,14 @@ function buttonsSetting() {
 
 	for (var i = 0; i < buttons.length; i++) {
 		buttons[i].bubbles = true;
-		EventUtil.addHandler(buttons[i], "click", buttonFunc(i));
+		EventUtil.addHandler(buttons[i], "click", buttonFunc(i, "custom"));
 	}
 }
 
 
 //binding function with each button
-function buttonFunc(num) {
-	
+function buttonFunc(num, mode) {
+	return function() {
 		if (this.bubbles == true) {
 			var request = createRequest();
 			var url = "/";
@@ -137,13 +138,12 @@ function buttonFunc(num) {
   				return function(event) {
   					if(request.readyState == 4) {
   						if ((request.status >= 200 && request.status < 300) || request.status == 304) {
-  							showNumber(button, request.responseText);
-  							button.className += " clicked";  //set the button to clicked class
-  							EventUtil.removeHandler(button, "click", buttonFunc);  //remove the handle function from the button
-  							enableButtons(button);   //enable other buttons
-  							MotivateInfoBar();       // check and motivate the info bar
 
-  							oneByOne(num+1)();
+  							custom(button, num, request.responseText);
+
+  							if (mode == "oneByOne") {
+  								oneByOne(num+1)();
+  							}
   						} else {
   							console.log("request failed");
   						}
@@ -164,8 +164,15 @@ function buttonFunc(num) {
 			//pass the request to the atplusSetting function
 			atplusSetting(request);
 		}
+	}
+}
 
-			
+function custom(button, num, text) {
+	showNumber(button, text);
+  	button.className += " clicked";  //set the button to clicked class
+  	EventUtil.removeHandler(button, "click", buttonFunc);  //remove the handle function from the button
+  	enableButtons(button);   //enable other buttons
+  	MotivateInfoBar();       // check and motivate the info bar					
 }
 
 //check and motivate the info Bar(the big big bubble) +_+
@@ -188,12 +195,13 @@ function MotivateInfoBar() {
 function clickToSum() {
 	var sum = 0;
 	var nums = document.getElementsByClassName("number");
+	var bigButton = document.getElementsByClassName("info")[0];
 
 	for (var i = 0; i < nums.length; i++) {
 		sum += parseInt(nums[i].innerHTML);
 	}
 
-	this.getElementsByTagName("h2")[0].appendChild(document.createTextNode(sum));
+	bigButton.getElementsByTagName("h2")[0].appendChild(document.createTextNode(sum));
 }
 
 //enable the unclicked buttons

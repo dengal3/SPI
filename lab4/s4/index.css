@@ -281,3 +281,22 @@ h3:hover {
 #at-plus-container:hover .button.clicked {
 	background-color: rgba(0,0,0,0.5);
 }
+
+h2,
+h4 {
+}
+
+h2 {
+	position: absolute;
+	top: 10%;
+	right: 1%;
+	text-align: center;
+}
+
+h4 {
+	position: absolute;
+	top: 50%;
+	right: 0.5%;
+	text-align: center;
+
+}
