@@ -1,0 +1,14 @@
+顺便玩一下git的命令控制
+======================
+
+#####git
+*   git branch <branchName>------新建一个分支
+*   git checkout <branchName>-------切换到分支上
+*   git rebase master ------------先将master的内容更新到本分支上（多人开发的时候，因为master可能会有变化，所以一半都要先这样做==）
+*   git diff master <branchName> ---------可以用来看master和分支之前的差别
+*   git merge <branchName> --------- 合并分支（这个是要回到master那里在merge的，所以会先有一个git checkout master跳回到master上面去==）
+*   git reset --hard ORIG_HEAD --------这个好像是可以用来取消merge操作的
+*   git reset HEAD <file> --------这个是用来取消不小心add进去还没commit 的文件的add操作
+*   git checkout -- <file> -----------这个是用来取消那个文件的commit，让文件回到上次commit完的状态
+
+#######我都不知道自己在写什么QAQ，基础git操作
