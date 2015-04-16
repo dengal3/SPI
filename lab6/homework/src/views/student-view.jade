@@ -1,0 +1,22 @@
+extends layout
+
+block content
+	div.container
+		a(href="/assignment/student/#{userId}") 返回
+		div.row
+			#requirement #{requirement}
+			#deadline #{deadline.getFullYear()}年 #{deadline.getMonth()+1}月#{deadline.getDate()}日 #{deadline.getHours()}:#{('0'+deadline.getMinutes()).slice(-2)}
+			#homeworkContent 
+					你的作业:#{homeworkContent}
+			#grade
+				if grade < 0
+					还未评分呢
+				else
+					你的分数：#{grade}
+			
+			form#submit(class='form-group' action='/homework-submit/#{userId}/#{assignmentId}', method='POST')
+				textArea(class='form-control' rows="5" name="homeworkContent" placeholder="请在这里写你的作业~")
+				if timeUp
+					button(class='btn btn-lg btn-primary btn-block disabled', type='submit') 已过截止时间，无法上交
+				else
+					button(class='btn btn-lg btn-primary btn-block ', type='submit') 上交

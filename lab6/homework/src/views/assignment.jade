@@ -1,0 +1,36 @@
+extends layout
+
+block content
+	div.container
+		a(href="/home") 返回
+		div.row
+			div.col-sm-6.col-md-4.col-md-offset-4
+				if userType == 'teacher'
+					form(class='form-signin', action='/assignment-add/teacher/#{userId}', method='POST')
+							input(type='text', name='requirement' class='form-control', placeholder='作业要求',required, autofocus)
+							input(type='datetime-local', name='deadline' class='form-control', placeholder='截止时间:yyyy-mm-dd-hh-mm-ss', required)
+							button(class='btn btn-lg btn-primary btn-block', type='submit') 增加作业
+		div.row
+				h1.text-center.login-title 作业
+					if assignments.length == 0
+						div 暂时还没有作业哦==
+					else
+						table#assignments-list.table.table-striped.table-striped
+							thead
+								td 序号
+								td 要求
+								td 截止时间
+								td 查看
+							tbody
+								each assignment, i in assignments
+									tr
+										td=i+1
+										td #{assignment.requirement}
+										-var deadline = assignment.deadline
+										td #{deadline.getFullYear()}年 #{deadline.getMonth()+1}月#{deadline.getDate()}日 #{deadline.getHours()}:#{('0'+deadline.getMinutes()).slice(-2)}
+										td
+											if userType == 'student'
+												a(href='/assignment-student-view/#{userId}/#{assignment._id}') 查看
+											else
+												a(href='/assignment-teacher-view/#{userId}/#{assignment._id}') 查看
+					

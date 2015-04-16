@@ -1,0 +1,57 @@
+extends layout
+
+block content
+	div.container
+		a(href="/assignment/teacher/#{userId}") 返回
+		div.row
+			#requirement #{requirement}
+			#deadline #{deadline.getFullYear()}年 #{deadline.getMonth()+1}月#{deadline.getDate()}日 #{deadline.getHours()}:#{('0'+deadline.getMinutes()).slice(-2)}
+			div.col-sm-6.col-md-4.col-md-offset-4
+				if userType == 'teacher'
+					form(class='form-signin', action='/modify/teacher/#{userId}/#{assignmentId}', method='POST')
+							input(type='text', name='requirement' class='form-control', placeholder='新的作业要求@_@', required)
+							if timeUp
+								button(class='btn btn-lg btn-primary btn-block disabled', type='submit') 已过截止时间，无法修改作业要求
+							else
+								button(class='btn btn-lg btn-primary btn-block', type='submit') 修改作业要求
+									
+					form(class='form-signin', action='/modify/teacher/#{userId}/#{assignmentId}', method='POST')
+							input(type='datetime-local', name='deadline' class='form-control', placeholder='截止时间:yyyy-mm-dd-hh-mm-ss', required)
+							if timeUp
+								button(class='btn btn-lg btn-primary btn-block disabled', type='submit') 已过截止时间，无法修改截止时间
+							else
+								button(class='btn btn-lg btn-primary btn-block', type='submit') 修改截止时间
+
+		div.row
+				h1.text-center.login-title 作业
+					if homeworks.length == 0
+						div 并没有人交作业==
+					else
+						table#homeworks-list.table.table-striped.table-striped
+							thead
+								td 序号
+								td 学生姓名
+								td 作业内容
+								td 分数
+								td 评分
+							tbody
+								each homework, i in homeworks
+									tr
+										td=i+1
+										td #{homework.studentName}
+										td #{homework.content}
+										td
+											if homework.grade < 0
+												span 未评分
+											else
+												span #{homework.grade}
+										td
+											if userType == 'teacher'
+												form(action='/grade/#{userId}/#{assignmentId}/#{homework._id}' method='POST')
+													label(for='grade')评分
+													input(type='text' name='grade')
+													if timeUp
+														button(class='btn btn-primary btn-block' type='submit' for='grade') 确定
+													else
+														button(class='btn btn-primary btn-block disabled' type='submit' for='grade') 改什么改呀，还没到截止时间呢
+					
