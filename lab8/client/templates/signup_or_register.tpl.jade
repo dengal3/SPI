@@ -1,0 +1,46 @@
+div.container
+        div.row
+            div.col-sm-6.col-md-4.col-md-offset-4
+                div.text-center.login-title
+                    div.account-wall
+                        img(class='profile-img', src='/img/02.jpg')
+                        form#login-user(class='form-signin')
+                            div.input-group
+                                span#username-span.input-group-addon Username
+                                input(type='text', name='username' class='form-control', placeholder='Username',aria-decribedby='username-span',required, autofocus)
+                            div.input-group
+                                span#password-span.input-group-addon Password
+                                input(type='password', aria-decribedby='password-span',name='password' class='form-control', placeholder='Password', required)
+                            button.login(class='btn btn-lg btn-primary btn-block') Login
+                            span.clearfix
+                            a.to-register(href='#', class='text-center new-account') Create an account
+                    #message
+                    if message
+                        h1.text-center.error-message #{message}
+                    div
+                        form#add-user(class='form-signin', style='display:none')
+                            div.input-group
+                                span#username-span.input-group-addon Username
+                                input(type='text', id='username',aria-decribedby='username-span',name='username', class='form-control', placeholder='Username',required, autofocus)
+                            div.input-group
+                                span#password-span.input-group-addon Password
+                                input(type='password',id='password', aria-decribedby='password-span',name='password', class='form-control nomargin', placeholder='Password', required)
+                            div.input-group
+                                span#email-span.input-group-addon Email
+                                input(type='email',id='email', aria-decribedby='email-span',name='email', class='form-control', placeholder='Email',required)
+                            div.input-group
+                                span#firstName-span.input-group-addon firstName
+                                input(type='text', id='firstName', aria-decribedby='firstName-span',name='firstName', class='form-control', placeholder='First Name',required)
+                            div.input-group
+                                span#lastName-span.input-group-addon lastName
+                                input(type='text', id='lastName',name='lastName', aria-decribedby='lastName-span',class='form-control', placeholder='Last Name',required)
+                            select(name='user-type' class='form-control')
+                                option(value='student') Student
+                                option(value='teacher') Teacher
+                            button.register(class='btn btn-lg btn-primary btn-block') register
+                            span.clearfix
+                            a.to-login(href='#', class='text-center new-account') Login
+                    #message
+                        if message
+                            h1.text-center.error-message #{message}
+

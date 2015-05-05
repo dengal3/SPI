@@ -1,0 +1,16 @@
+
+## install & start development
+1. install Meteor
+2. 进入目录，meteor run或者meteor
+3. 浏览网页http://localhost:3000
+
+已有账号：
+教师：
+user : t
+pw   : 123
+
+学生：
+user : s
+pw   : 123
+
+ps: 如果在运行的时候有什么问题的话 请联系qq 729880819 thx:)

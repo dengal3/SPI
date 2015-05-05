@@ -1,0 +1,34 @@
+div.container
+        button.navbar-btn.logout(href='#') logout
+        div.row
+            div(role='tabpane')
+                ul#tab.nav.nav-tabs(role='tablist')
+                    li.active(role='presentation')
+                        a(href='#table',aria-controls='table',role='tab',data-toggle='tab') All assignments
+                    if teacher
+                        li(role='presentation')
+                            a(href='#form',aria-controls='form',role='tab',data-toggle='tab') add assignment
+                .tab-content
+                    .tab-pane#form(role='tabpane')
+                        .col-xs-6.col-xs-offset-3
+                            form(class='form-signin')
+                                input(type='text', name='requirement' class='form-control', placeholder='作业要求',required,autofocus)
+                                input(type='datetime-local', name='deadline' class='form-control', placeholder='截止时间',required)
+                                button.add_assignment(class='btn btn-lg btn-primary btn-block', type='submit') 增加作业
+
+                    .tab-pane#table.active(role='tabpane')
+                        if assignment
+                            table#assignments-list.table.table-striped.table-striped
+                                thead
+                                    td 要求
+                                    td 截止时间
+                                    td 查看
+                                tbody
+                                    each assignment
+                                        tr
+                                            td #{requirement}
+                                            td #{deadline}
+                                            td
+                                                    a.teacher-view(href= "/view/#{assignmentId}" ) 查看
+                        else
+                            div 暂时还没有作业哦==

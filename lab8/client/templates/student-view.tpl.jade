@@ -1,0 +1,25 @@
+div.container
+            a.back(href="#") 返回
+            div.row
+                h3 REQUIREMENT
+                p#requirement #{assignment.requirement}
+                hr
+                h3 DEADLINE
+                p#deadline #{assignment.deadline}
+                hr
+                h3 CONTENT
+                p#homeworkContent 
+                    h4 #{homework.homeworkContent}
+                hr
+                h3 GRADE
+                    if noGrade
+                        h4 还未评分呢
+                    else
+                        h4 #{homework.grade}
+                hr
+                form#submit(class='form-group')
+                    textArea(class='form-control' rows="5" name="homeworkContent" placeholder="请在这里写你的作业~")
+                    if timeUp
+                        button#submit-homework(class='btn btn-lg btn-primary btn-block disabled', type='submit') 已过截止时间，无法上交
+                    else
+                        button#submit-homework(class='btn btn-lg btn-primary btn-block ', type='submit') 上交    

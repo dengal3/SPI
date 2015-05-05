@@ -1,0 +1,30 @@
+form#login-user.form-horizontal.col-sm-6.center-block(data-parsley-validate) 
+    div.form-group
+        label.col-sm-2.control-label Username:
+        .col-sm-10
+            input.form-control(type='text',name='username',placeholder='username',data-parsley-pattern="^\w+",data-parsley-trigger='keyup',required)
+    div.form-group
+        label.col-sm-2.control-label Password:
+        .col-sm-10
+            input.form-control(type='password',name='password',placeholder='password',required)
+    .ui.button.login  Login
+    a.to-register(href='#') create an account
+
+form#add-user.form-horizontal.col-sm-6.center-block(data-parsley-validate style='display: none')
+    div.form-group
+        label.col-sm-2.control-label Username:
+        .col-sm-10  
+            input.form-control(type='text',name='username',placeholder='username',data-parsley-pattern="^\w+",data-parsley-trigger='keyup',required)
+    div.form-group
+        label.col-sm-2.control-label Password
+        .col-sm-10
+            input.form-control(type='password',name='password',placeholder='password',data-parsley-minlength='2',data-parsley-trigger='keyup',required)
+    div.form-group
+        label.col-sm-2.control-label UserType:
+        .col-sm-10
+            label teacher
+            input(type='radio',name='user-type',value='teacher',checked='checked')
+            label student
+            input(type='radio',name='user-type',value='student')
+    .ui.button.register Register
+    a.to-login(href="#") login

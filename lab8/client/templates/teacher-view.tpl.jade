@@ -1,0 +1,64 @@
+div.container
+            a.back(href="#") 返回
+            div.row
+                h3 REQUIREMENT
+                p#requirement #{assignment.requirement}
+                hr
+                h3 DEADLINE
+                p#deadline #{assignment.deadline}
+                hr
+                div(role='tabpane')
+                    ul#tab.nav.nav-tabs(role='tablist')
+                        li.active(role='presentation')
+                            a(href='#table',aria-controls='table',role='tab',data-toggle='tab') All uploaded homeworks
+                        if teacher
+                            li(role='presentation')
+                                a(href='#form',aria-controls='form',role='tab',data-toggle='tab') modify assignment
+                    .tab-content
+                        .tab-pane#form(role='tabpane')
+                            div.col-sm-6.col-md-4.col-md-offset-4
+                                form.modify-requirement-form(class='form-signin')
+                                    div.input-group
+                                        span#new-requirement-span.input-group-addon requirement
+                                        input(type='text',aria-decribedby='new-requirement-span',name='requirement',class='form-control', placeholder='新的作业要求@_@', required)
+                                        if timeUp
+                                            button(class='btn btn-primary btn-block disabled', type='submit') 已过截止时间，无法修改作业要求
+                                        else
+                                            button.modify-requirement(class='btn btn-primary btn-block', type='submit') 修改作业要求           
+                                form.modify-deadline-form(class='form-signin')
+                                        div.input-group
+                                            span#new-deadline-span.input-group-addon new deadline
+                                            input(type='datetime-local', aria-decribedby='new-deadline-span',name='deadline',class='form-control', placeholder='截止时间:yyyy-mm-dd-hh-mm-ss', required)
+                                            if timeUp
+                                                button(class='btn btn-primary btn-block disabled', type='submit') 已过截止时间，无法修改截止时间
+                                            else
+                                                button.modify-deadline(class='btn btn-primary btn-block', type='submit') 修改截止时间
+                        .tab-pane#table.active(role='tabpane')
+                            div.row
+                                        if homeworks
+                                            table#homeworks-list.table.table-striped
+                                                thead
+                                                    td 学生姓名
+                                                    td 作业内容
+                                                    td 分数
+                                                    td 评分
+                                                tbody
+                                                    each homeworks
+                                                        tr
+                                                            span(style='display: none') #{_id}
+                                                            td #{studentName}
+                                                            td #{homeworkContent}
+                                                            td
+                                                                if noGrade
+                                                                    span 未评分
+                                                                else
+                                                                    span #{grade}
+                                                            td
+                                                                div
+                                                                        input(type='text',name='grade')
+                                                                        if timeUp
+                                                                            button.modify-grade(class='btn btn-xs' type='submit' for='grade') 确定
+                                                                        else
+                                                                            button(class='btn btn-xs disabled' type='submit' for='grade') 还没到截止时间呢
+                                        else
+                                            div 并没有人交作业==
